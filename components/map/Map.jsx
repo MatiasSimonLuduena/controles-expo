@@ -7,9 +7,10 @@ import styles from './styles';
 
 import MapView, { Marker } from 'react-native-maps';
 
-const delivery = require("../../assets/repartidor.png")
+const delivery = require("../../assets/repartidor.png");
+const transito = require("../../assets/transito.png");
 
-export default function Map() {
+export default function Map({ markers, setMarkers }) {
   const [origin, setOrigin] = useState({
     latitude: -31.428086, longitude: -64.184786
   });
@@ -62,6 +63,12 @@ export default function Map() {
 
   const mapViewRef = useRef(null);
 
+  const handleMarkerDrag = (index, newCoordinate) => {
+    const updatedMarkers = [...markers];
+    updatedMarkers[index] = newCoordinate;
+    setMarkers(updatedMarkers);
+  };
+
   return (
     <View style={styles.container}>
       <MapView
@@ -78,6 +85,14 @@ export default function Map() {
           coordinate={origin}
           image={delivery}
         />
+        {markers.map((item, i) => (
+          <Marker
+            key={i}
+            coordinate={item}
+            image={transito}
+            draggable onDragEnd={(e) => handleMarkerDrag(i, e.nativeEvent.coordinate)}
+          />
+        ))}
       </MapView>
     </View>
   );
