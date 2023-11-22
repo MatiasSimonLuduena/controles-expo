@@ -8,13 +8,13 @@ import MapView, { Marker } from 'react-native-maps';
 const delivery = require("../../assets/repartidor.png");
 const transito = require("../../assets/transito.png");
 
-export default function Map({ markers, setMarkers, origin, init }) {
+export default function Map({ markers, origin, init, myMarkers, setMyMarkers, setIdMarker }) {
   useEffect(() => {
     mapViewRef.current?.animateToRegion({
       latitude: origin.latitude,
       longitude: origin.longitude,
-      latitudeDelta: 0.01,
-      longitudeDelta: 0.01
+      latitudeDelta: 0.02,
+      longitudeDelta: 0.02
     });
   }, [init]);
 
@@ -23,12 +23,13 @@ export default function Map({ markers, setMarkers, origin, init }) {
   const handleMarkerDrag = (index, newCoordinate) => {
     const updatedMarkers = [...markers];
     updatedMarkers[index] = newCoordinate;
-    setMarkers(updatedMarkers);
+    setMyMarkers(updatedMarkers);
   };
 
   return (
     <View style={styles.container}>
       <MapView
+        onPress={() => setIdMarker(null)}
         ref={mapViewRef}
         style={styles.map}
         initialRegion={{
@@ -47,7 +48,16 @@ export default function Map({ markers, setMarkers, origin, init }) {
             key={i}
             coordinate={item}
             image={transito}
+            onPress={() => setIdMarker(item.id)}
+          />
+        ))}
+        {myMarkers.map((item, i) => (
+          <Marker
+            key={i}
+            coordinate={item}
+            image={transito}
             draggable onDragEnd={(e) => handleMarkerDrag(i, e.nativeEvent.coordinate)}
+            onPress={() => console.log("ok")}
           />
         ))}
       </MapView>

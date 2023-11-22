@@ -11,9 +11,15 @@ import * as Location from 'expo-location';
 import Navbar from './components/navbar/Navbar';
 import Drawer from './components/drawer/Drawer';
 import Map from './components/map/Map';
+import Warn from './components/warn/Warn';
+import Desc from './components/desc/Desc';
 
 // import auth
 import Auth from './components/auth/Auth';
+
+// firebase
+import { collection, addDoc, getDocs } from "firebase/firestore"
+import { db } from "./firebase"
 
 export default function App() {
   // auth
@@ -82,6 +88,25 @@ export default function App() {
 
   // controles
   const [markers, setMarkers] = useState([]);
+  const [myMarkers, setMyMarkers] = useState([]);
+  const [idMarker, setIdMarker] = useState(null);
+
+  async function getMarkers() {
+    try {
+      await getDocs(collection(db, "controls")).then((querySnapshot)=>{               
+        const newData = querySnapshot.docs
+        .map((doc) => ({...doc.data(), id: doc.id }));
+
+        setMarkers(newData);
+    });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    getMarkers();
+  }, [myMarkers, idMarker]);
 
   if (auth) {
     return (
@@ -91,14 +116,21 @@ export default function App() {
         drawerPosition={'left'}
         renderNavigationView={() => (
           <Drawer
-            setMarkers={setMarkers} markers={markers} origin={origin} closeDrawer={closeDrawer}
+            setMyMarkers={setMyMarkers} myMarkers={myMarkers}
+            origin={origin} closeDrawer={closeDrawer}
           />
         )}
       >
         <View style={styles.container}>
           <StatusBar style="light" />
           <Navbar openDrawer={openDrawer}/>
-          <Map markers={markers} setMarkers={setMarkers} origin={origin} init={init}/>
+          <Map markers={markers} setMarkers={setMarkers}
+            origin={origin} init={init}
+            myMarkers={myMarkers} setMyMarkers={setMyMarkers}
+            setIdMarker={setIdMarker}
+          />
+          <Warn myMarkers={myMarkers} setMyMarkers={setMyMarkers}/>
+          <Desc idMarker={idMarker} setIdMarker={setIdMarker}/>
         </View>
       </DrawerLayoutAndroid>
     );

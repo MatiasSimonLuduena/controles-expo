@@ -2,7 +2,7 @@ import { View, Text, TouchableOpacity } from "react-native"
 
 import styles from "./styles"
 
-export default function Drawer({ markers, setMarkers, origin, closeDrawer }) {
+export default function Drawer({ myMarkers, setMyMarkers, origin, closeDrawer }) {
     return(
         <View style={styles.container}>
             <View style={{ height: 24 }}></View>
@@ -10,7 +10,7 @@ export default function Drawer({ markers, setMarkers, origin, closeDrawer }) {
             <TouchableOpacity
                 style={styles.warn}
                 onPress={() => {
-                    setMarkers([...markers, origin]);
+                    setMyMarkers([...myMarkers, origin]);
                     closeDrawer();
                 }}
             >
