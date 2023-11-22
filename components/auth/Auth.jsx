@@ -36,8 +36,8 @@ export default function Auth({ setAuth }) {
             const newDoc = await addDoc(collection(db, "users"),
                 { nombre: nombre.trim().toLowerCase() })
             ;
-            newDoc.id && setAuth(true);
-            newDoc.id && await AsyncStorage.setItem('auth', "true");
+            newDoc.id && setAuth(nombre);
+            newDoc.id && await AsyncStorage.setItem('auth', nombre);
         } catch (error) {
             console.log(error);
         }
@@ -60,7 +60,7 @@ export default function Auth({ setAuth }) {
                 <Text style={styles.textButton}>Entrar</Text>
             </TouchableOpacity>
             <Text style={styles.msg}>
-                Si no tienes una cuenta se te creará una automaticamente
+                Creemos rápido tu cuenta
             </Text>
         </View>
     )

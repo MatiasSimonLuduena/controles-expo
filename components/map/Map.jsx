@@ -55,7 +55,6 @@ export default function Map({ markers, origin, init, myMarkers, setMyMarkers, se
           <Marker
             key={i}
             coordinate={item}
-            image={transito}
             draggable onDragEnd={(e) => handleMarkerDrag(i, e.nativeEvent.coordinate)}
             onPress={() => console.log("ok")}
           />

@@ -18,7 +18,7 @@ import Desc from './components/desc/Desc';
 import Auth from './components/auth/Auth';
 
 // firebase
-import { collection, addDoc, getDocs } from "firebase/firestore"
+import { collection, getDocs } from "firebase/firestore"
 import { db } from "./firebase"
 
 export default function App() {
@@ -27,7 +27,7 @@ export default function App() {
 
   async function storage() {
     const valor = await AsyncStorage.getItem('auth');
-    valor === "true" && setAuth(true);
+    valor && setAuth(valor);
   }
 
   // drawer
@@ -117,7 +117,7 @@ export default function App() {
         renderNavigationView={() => (
           <Drawer
             setMyMarkers={setMyMarkers} myMarkers={myMarkers}
-            origin={origin} closeDrawer={closeDrawer}
+            origin={origin} closeDrawer={closeDrawer} auth={auth}
           />
         )}
       >
