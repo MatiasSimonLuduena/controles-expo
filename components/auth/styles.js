@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
     title: {
         color: "#fff",
         textTransform: "uppercase",
-        fontSize: 20,
+        fontSize: 18,
         letterSpacing: 1,
         fontWeight: "700",
         textAlign: "center",
@@ -54,6 +54,13 @@ const styles = StyleSheet.create({
         fontWeight: "600",
         fontSize: 15,
         padding: 8
+    },
+    msgError: {
+        color: "red",
+        marginBottom: 15
+    },
+    msgErrorNone: {
+        display: "none"
     }
 })
 

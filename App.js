@@ -1,6 +1,9 @@
 import React, { useRef, useState, useEffect } from 'react';
+
+// RN
 import { StatusBar } from 'expo-status-bar';
 import { View, StyleSheet, DrawerLayoutAndroid, Alert } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import * as Location from 'expo-location';
 
@@ -14,7 +17,12 @@ import Auth from './components/auth/Auth';
 
 export default function App() {
   // auth
-  const [auth, setAuth] = useState(false)
+  const [auth, setAuth] = useState(false);
+
+  async function storage() {
+    const valor = await AsyncStorage.getItem('auth');
+    valor === "true" && setAuth(true);
+  }
 
   // drawer
   const drawerRef = useRef(null);
@@ -35,6 +43,7 @@ export default function App() {
 
   useEffect(() => {
     getLocationPermission();
+    storage();
   }, [])
 
   async function getPosition() {
